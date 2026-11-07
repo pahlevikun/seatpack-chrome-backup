@@ -1,6 +1,6 @@
 ---
 name: seatpack-chrome-backup
-description: Backs up Google Chrome profiles (history, cookies, extensions, logins) and editor plugins (Cursor, VS Code, Android Studio), then restores with merge-by-email so already-signed-in Chrome profiles are not replaced. Use when migrating laptops, backing up Chrome profiles, copying Cursor/VS Code/Android Studio plugins, or restoring those packs onto a new Mac.
+description: macOS Chrome backup and restore — profiles, extensions, logins; Cursor, VS Code, and Android Studio plugins. Merge by email or Gaia id, not folder name. ZIP64 packs. Use for Mac migration, laptop backup, chrome backup, editor plugins, or restore on a new Mac. Not for account cleanup (use seatsweep-macos-cleanup).
 ---
 
 <objective>

@@ -14,6 +14,8 @@ I copy Chrome profiles, Cursor plugins, VS Code plugins, and Android Studio plug
 npx skills@latest add pahlevikun/seatpack-chrome-backup
 ```
 
+MIT License. See [LICENSE](LICENSE). Releases: [CHANGELOG](CHANGELOG.md).
+
 ## Workflow
 
 Quit Chrome, Cursor, VS Code, and Android Studio before a copy or a restore. A live profile comes back missing files.
