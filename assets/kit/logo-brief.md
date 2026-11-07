@@ -5,11 +5,13 @@
 - **Mode:** one_shot
 - **Kit tier:** lite
 - **Library category:** oss_repo_mark
-- **Clichés to avoid:** GitHub octocat, GitLab fox, GNU head, single-letter monogram (Go), Chrome's circle, a generic suitcase-plus, Murk the mug
+- **Clichés to avoid:** GitHub octocat, GitLab fox, GNU head, single-letter monogram (Go), Chrome multicolor circle logo, a generic suitcase-plus, Murk the mug
 - **Grill mode:** skip (one_shot, copy and tokens locked)
 - **Intent:** The four README assets should tell a person who already has Chrome signed in on the next laptop that this bag carries profiles and editor plugins, and that restore matches the email on the luggage tag. Mode is one_shot, kit tier lite. The mark is a satchel with three bands and an email tag. Column 3 is a terminal narrative (inventory, then merge by email). Tokens, type, and the flat background are fixed. Library marks were study-only.
 - **Context sources:**
-  - `levistack/docs/assets/logo.svg` (hex tokens, IBM Plex, card-as-terminal)
+  - Google Chrome brand color vocabulary (study only; **not** official Google branding): Blue `#4285F4`, Red `#EA4335`, Yellow `#FBBC04`, Green `#34A853` ([Google brand color guidelines](https://about.google/brand-resource-center/brand-elements/))
+  - Material / Google gray text tokens: `#202124`, `#5F6368`, surfaces `#F8F9FA`, `#F1F3F4`, `#E8EAED`, `#DADCE0`
+  - Prior generation cited `levistack/docs/assets/logo.svg` for layout only; palette superseded by Chrome-inspired bright theme (2026-11-07)
   - `logo-kit-svg/references/token-table.md` (roles; omit `--del` / `--add` when column 3 is not `diff-hunks`)
   - `logo-kit-svg/references/svg-blueprints.md` (512 and 904 grids, column x=184 and x=456, 24px gutter)
   - `logo-kit-svg/references/banner-column-3.md` (`feature-summary`, no red/green hunks)
@@ -27,7 +29,7 @@
 
 ## 1. Brand and copy
 
-- **Wordmark:** `seat` in `#e8e4f4` + `pack` in `#c99d48` (8 letters)
+- **Wordmark:** `seat` in `#202124` + `pack` in `#4285F4` (8 letters). Cursor strip: four 7px bands (blue, red, yellow, green).
 - **Wordmark cursor x:** `328` (about 8px after the lowercase word; the 38px formula `184 + ceil(8 * 20.2) = 346` overshoots lowercase)
 - **README tagline:** Chrome profiles and editor plugins, in one bag. Restore merges by email.
 - **Banner tagline (fits column 2):** `one bag. merge by email.` (24 chars)
@@ -50,32 +52,33 @@ Samples are Ada Example and Budi Example. Profile folders stay `Default` and `Pr
 
 ## 3. Color tokens
 
-Source file: `levistack/docs/assets/logo.svg`.
+Source: Chrome-inspired palette (not official Google branding). Layout roles still follow `logo-kit-svg/references/token-table.md`.
 
-| Role | Hex | Where that file uses it |
+| Role | Hex | Where |
 |---|---|---|
-| `--bg` | `#17152e` | banner fill, tile fill |
-| `--surface` / card | `#3a3358` | border token; that logo fills the terminal card with it |
-| `--surface2` / topbar | `#4a4f7a` | fog; that logo fills the top bar with fog |
-| `--line` | `#3a3358` | banner stroke |
-| `--line2` | `#4a4f7a` | card stroke on this banner (fog) |
-| `--fg` | `#e8e4f4` | `levi` wordmark |
-| `--muted` | `#98a2b6` | tagline |
-| `--dim` | `#98a2b6` | no separate hex in the cited list |
-| `--accent` | `#c99d48` | `stack` wordmark, cursor |
-| `--amber-bg` | `#3a3358` | pill fill on that logo |
-| `--accent-dim` | `#b2853a` | pill stroke, gold band |
-| teal band | `#3c7f7c` | middle mug band |
-| purple band | `#66589a` | lower mug band |
-| gold band | `#b2853a` | upper mug band |
+| `--bg` | `#F8F9FA` | banner fill, icon tile, social cards |
+| `--surface` / card | `#FFFFFF` | terminal card, merge panel, luggage tag |
+| `--surface2` / topbar | `#F1F3F4` | terminal title bar |
+| `--line` | `#DADCE0` | banner stroke, rules |
+| `--line2` | `#E8EAED` | card stroke, timeline rail |
+| `--fg` | `#202124` | wordmark `seat`, terminal primary text |
+| `--muted` | `#5F6368` | tagline, motto, secondary terminal |
+| `--dim` | `#9AA0A6` | pipeline arrows |
+| `--accent` | `#4285F4` | wordmark `pack`, chip labels, merge highlights |
+| chrome-red | `#EA4335` | strap, cord, window dot, pill dot |
+| chrome-yellow | `#FBBC04` | upper bag band, profiles pill stroke |
+| chrome-green | `#34A853` | middle band, `keep`, editor-plugins pill stroke |
+| chrome-blue | `#4285F4` | lower band, tag stroke |
+| pill fill | `#F1F3F4` | column 2 pills |
+| ink stroke | `#3C4043` | bag outline |
 
-`--del` and `--add` are omitted. `token-table.md` says those roles are for `diff-hunks` only.
+`--del` and `--add` are omitted. Column 3 is `feature-summary`, not `diff-hunks`.
 
-Flat `#17152e` only. No scanlines, no fog filters, no mug.
+Flat `#F8F9FA` only. No scanlines. No Chrome circle mark.
 
 ## 4. Mark
 
-A satchel: strap, flap, three horizontal bands in the levistack band order (gold, teal, purple), and a luggage tag that reads `ada@example.com`. The tag is the merge key. Sibling of levistack. Not Murk.
+A satchel: red strap, gray flap, three horizontal bands (yellow, green, blue), and a luggage tag that reads `ada@example.com`. The tag is the merge key. Not Murk. Not the Chrome logo.
 
 ## 5. Research
 
