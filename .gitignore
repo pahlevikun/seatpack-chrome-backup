@@ -1,0 +1,7 @@
+# Local Chrome dumps and secrets. Keep these out of a later commit.
+private/
+*.zip
+*inventory*.json
+.env
+.DS_Store
+private-hold/

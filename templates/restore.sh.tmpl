@@ -1,0 +1,81 @@
+#!/bin/bash
+# Restore Chrome / Cursor / VS Code / Android Studio from this backup folder.
+# Double-click Restore.command, or: bash restore.sh
+# Compatible with macOS bash 3.2. LF line endings only.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+RSYNC="/usr/bin/rsync"
+LOG="$ROOT/restore.log"
+DEST_CHROME="$HOME/Library/Application Support/Google/Chrome"
+SRC_CHROME="$ROOT/chrome/Google-Chrome"
+
+log() { printf '%s\n' "$*" | tee -a "$LOG"; }
+
+: > "$LOG"
+log "==> Restore $(date '+%Y-%m-%d %H:%M:%S')"
+log "    from: $ROOT"
+
+need=""
+pgrep -x "Google Chrome" >/dev/null 2>&1 && need="${need} Chrome"
+pgrep -x "Code" >/dev/null 2>&1 && need="${need} VS Code"
+pgrep -x "Cursor" >/dev/null 2>&1 && need="${need} Cursor"
+pgrep -x "studio" >/dev/null 2>&1 && need="${need} Android Studio"
+if [[ -n "$need" ]]; then
+  log "Quit these apps first, then run restore again:${need}"
+  osascript -e 'display alert "Quit Chrome, Cursor, VS Code, and Android Studio first, then run Restore again."' >/dev/null 2>&1 || true
+  exit 1
+fi
+
+if [[ -d "$SRC_CHROME" ]]; then
+  log "==> Chrome"
+  mkdir -p "$HOME/Library/Application Support/Google"
+  if [[ ! -f "$DEST_CHROME/Local State" ]]; then
+    log "    no Chrome data on this Mac, copy full backup"
+    "$RSYNC" -aE -- "$SRC_CHROME/" "$DEST_CHROME/"
+    SECRET_FILE="$ROOT/private/chrome-safe-storage.txt"
+    if [[ -f "$SECRET_FILE" ]]; then
+      SECRET=$(cat "$SECRET_FILE")
+      security delete-generic-password -s "Chrome Safe Storage" >/dev/null 2>&1 || true
+      if security add-generic-password -a "Chrome" -s "Chrome Safe Storage" -T "/Applications/Google Chrome.app" -w "$SECRET" >/dev/null 2>&1; then
+        log "    Chrome Safe Storage restored to Keychain"
+      else
+        log "    Could not write Chrome Safe Storage. Sign in Chrome Sync for passwords."
+      fi
+      unset SECRET
+    fi
+  else
+    log "    Chrome already exists, merge missing profiles only (do not replace signed-in emails)"
+    python3 "$ROOT/scripts/merge_chrome_profiles.py" "$SRC_CHROME" "$DEST_CHROME" | tee -a "$LOG"
+    log "    left Chrome Safe Storage alone so current passwords stay valid"
+  fi
+fi
+
+if [[ -d "$ROOT/vscode" ]]; then
+  log "==> VS Code"
+  mkdir -p "$HOME/.vscode" "$HOME/Library/Application Support/Code"
+  [[ -d "$ROOT/vscode/extensions" ]] && "$RSYNC" -aE -- "$ROOT/vscode/extensions/" "$HOME/.vscode/extensions/"
+  [[ -d "$ROOT/vscode/User" ]] && "$RSYNC" -aE -- "$ROOT/vscode/User/" "$HOME/Library/Application Support/Code/User/"
+fi
+
+if [[ -d "$ROOT/cursor" ]]; then
+  log "==> Cursor"
+  mkdir -p "$HOME/.cursor" "$HOME/Library/Application Support/Cursor/User"
+  [[ -d "$ROOT/cursor/extensions" ]] && "$RSYNC" -aE -- "$ROOT/cursor/extensions/" "$HOME/.cursor/extensions/"
+  [[ -d "$ROOT/cursor/plugins" ]] && "$RSYNC" -aE -- "$ROOT/cursor/plugins/" "$HOME/.cursor/plugins/"
+  [[ -d "$ROOT/cursor/User" ]] && "$RSYNC" -aE -- "$ROOT/cursor/User/" "$HOME/Library/Application Support/Cursor/User/"
+fi
+
+if [[ -d "$ROOT/android-studio" ]]; then
+  log "==> Android Studio"
+  mkdir -p "$HOME/Library/Application Support/Google"
+  for d in "$ROOT/android-studio"/AndroidStudio*; do
+    [[ -d "$d" ]] || continue
+    base=$(basename "$d")
+    "$RSYNC" -aE -- "$d/" "$HOME/Library/Application Support/Google/$base/"
+  done
+fi
+
+log "==> Restore done $(date '+%Y-%m-%d %H:%M:%S')"
+log "Install the apps if they are missing, then open them. Sign in Chrome Sync as a backup for passwords."
+osascript -e 'display notification "Chrome and plugin restore finished." with title "Restore done"' >/dev/null 2>&1 || true
